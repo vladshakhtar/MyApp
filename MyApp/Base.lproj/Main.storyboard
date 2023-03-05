@@ -102,7 +102,7 @@
                                         <rect key="frame" x="0.0" y="71.333333333333329" width="428" height="203.33333333333331"/>
                                         <color key="tintColor" systemColor="labelColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="205" id="ijK-Oy-cFt"/>
+                                            <constraint firstAttribute="height" constant="205" id="1fi-WC-zGz"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CommentsCount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adt-i9-8qi">
@@ -170,7 +170,50 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="19.626168224299064" y="97.840172786177106"/>
+            <point key="canvasLocation" x="1515" y="109"/>
+        </scene>
+        <!--PostListViewController-->
+        <scene sceneID="HGN-ch-2Ac">
+            <objects>
+                <tableViewController title="PostListViewController" id="p3l-iV-a52" customClass="PostListViewController" customModule="MyApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="yIp-8F-wzw">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostTableViewCell" id="G5U-UX-zon" customClass="PostTableViewCell" customModule="MyApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44.666666030883789" width="428" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="G5U-UX-zon" id="Eue-gh-WIH">
+                                    <rect key="frame" x="0.0" y="0.0" width="428" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iEl-k2-yfC" userLabel="RedditPost">
+                                            <rect key="frame" x="0.0" y="0.0" width="428" height="43.666666666666664"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="iEl-k2-yfC" secondAttribute="trailing" id="9tM-PV-T1w"/>
+                                        <constraint firstItem="iEl-k2-yfC" firstAttribute="leading" secondItem="Eue-gh-WIH" secondAttribute="leading" id="bER-eg-HzP"/>
+                                        <constraint firstItem="iEl-k2-yfC" firstAttribute="top" secondItem="Eue-gh-WIH" secondAttribute="top" id="vtM-6A-yaD"/>
+                                        <constraint firstAttribute="bottom" secondItem="iEl-k2-yfC" secondAttribute="bottom" id="zHF-gM-br3"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="RedditPost" destination="iEl-k2-yfC" id="bfe-ln-nNc"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="p3l-iV-a52" id="16c-dG-Gkw"/>
+                            <outlet property="delegate" destination="p3l-iV-a52" id="zxv-Sf-T4A"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u1O-7e-PCR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-97" y="109"/>
         </scene>
     </scenes>
     <resources>

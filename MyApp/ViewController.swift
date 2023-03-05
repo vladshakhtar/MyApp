@@ -10,25 +10,25 @@ import SDWebImage
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var MainView: UIView!
+    @IBOutlet private weak var MainView: UIView!
     
-    @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet private weak var shareButton: UIButton!
     
-    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet private weak var usernameLabel: UILabel!
     
-    @IBOutlet weak var domainLabel: UILabel!
+    @IBOutlet private weak var domainLabel: UILabel!
     
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
     
-    @IBOutlet weak var timePassedLabel: UILabel!
+    @IBOutlet private weak var timePassedLabel: UILabel!
     
-    @IBOutlet weak var ratingLabel: UILabel!
+    @IBOutlet private weak var ratingLabel: UILabel!
     
-    @IBOutlet weak var commentsCountLabel: UILabel!
+    @IBOutlet private weak var commentsCountLabel: UILabel!
     
-    @IBOutlet weak var bookmarkButton: UIButton!
+    @IBOutlet private weak var bookmarkButton: UIButton!
     
-    @IBOutlet weak var redditImage: UIImageView!
+    @IBOutlet private weak var redditImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,38 +108,38 @@ class ViewController: UIViewController {
         }
         task.resume()
 
-        struct RedditAPIResponse: Codable {
-            let kind: String
-            let data: RedditData
-        }
-
-        struct RedditData: Codable {
-            let children: [RedditPost]
-            let after: String?
-        }
-
-        struct RedditPost: Codable {
-            let data: RedditPostData
-        }
-
-        struct RedditPostData: Codable {
-            let title: String
-            //let score: Int
-            let numComments: Int
-            let createdUtc: TimeInterval
-            //let thumbnail: String
-            let url: URL
-            let author: String
-            let ups: Int
-            let downs: Int
-            let domain: String
-            let saved: Bool = Bool.random()
-        }
+        
 
         
     }
     
-    
+    struct RedditAPIResponse: Codable {
+        let kind: String
+        let data: RedditData
+    }
+
+    struct RedditData: Codable {
+        let children: [RedditPost]
+        let after: String?
+    }
+
+    struct RedditPost: Codable {
+        let data: RedditPostData
+    }
+
+    struct RedditPostData: Codable {
+        let title: String
+        //let score: Int
+        let numComments: Int
+        let createdUtc: TimeInterval
+        //let thumbnail: String
+        let url: URL
+        let author: String
+        let ups: Int
+        let downs: Int
+        let domain: String
+        let saved: Bool = Bool.random()
+    }
     
     
 
