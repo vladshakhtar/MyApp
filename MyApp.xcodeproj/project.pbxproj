@@ -9,23 +9,29 @@
 /* Begin PBXBuildFile section */
 		678827B029B51BEB0060ED08 /* PostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678827AF29B51BEB0060ED08 /* PostListViewController.swift */; };
 		678827B229B51CDE0060ED08 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678827B129B51CDE0060ED08 /* PostTableViewCell.swift */; };
+		678827B629B5311A0060ED08 /* RedditPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678827B529B5311A0060ED08 /* RedditPostView.swift */; };
+		678827B829B534590060ED08 /* RedditPostView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 678827B729B534590060ED08 /* RedditPostView.xib */; };
 		67D4374329ABC06F009F0E8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D4374229ABC06F009F0E8B /* AppDelegate.swift */; };
 		67D4374529ABC06F009F0E8B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D4374429ABC06F009F0E8B /* SceneDelegate.swift */; };
-		67D4374729ABC06F009F0E8B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D4374629ABC06F009F0E8B /* ViewController.swift */; };
+		67D4374729ABC06F009F0E8B /* PostDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D4374629ABC06F009F0E8B /* PostDetailsViewController.swift */; };
 		67D4374A29ABC06F009F0E8B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67D4374829ABC06F009F0E8B /* Main.storyboard */; };
 		67D4374C29ABC073009F0E8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 67D4374B29ABC073009F0E8B /* Assets.xcassets */; };
 		67D4374F29ABC073009F0E8B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67D4374D29ABC073009F0E8B /* LaunchScreen.storyboard */; };
 		67D4375829AE6F16009F0E8B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 67D4375729AE6F16009F0E8B /* SDWebImage */; };
 		67D4375A29AE6F16009F0E8B /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 67D4375929AE6F16009F0E8B /* SDWebImageMapKit */; };
+		67EF252629B7947A00906C53 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 67EF252529B7947A00906C53 /* SDWebImage */; };
+		67EF252829B7947A00906C53 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 67EF252729B7947A00906C53 /* SDWebImageMapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		678827AF29B51BEB0060ED08 /* PostListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewController.swift; sourceTree = "<group>"; };
 		678827B129B51CDE0060ED08 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		678827B529B5311A0060ED08 /* RedditPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditPostView.swift; sourceTree = "<group>"; };
+		678827B729B534590060ED08 /* RedditPostView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RedditPostView.xib; sourceTree = "<group>"; };
 		67D4373F29ABC06F009F0E8B /* MyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		67D4374229ABC06F009F0E8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		67D4374429ABC06F009F0E8B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		67D4374629ABC06F009F0E8B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		67D4374629ABC06F009F0E8B /* PostDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailsViewController.swift; sourceTree = "<group>"; };
 		67D4374929ABC06F009F0E8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		67D4374B29ABC073009F0E8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		67D4374E29ABC073009F0E8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -37,7 +43,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67EF252629B7947A00906C53 /* SDWebImage in Frameworks */,
 				67D4375A29AE6F16009F0E8B /* SDWebImageMapKit in Frameworks */,
+				67EF252829B7947A00906C53 /* SDWebImageMapKit in Frameworks */,
 				67D4375829AE6F16009F0E8B /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,13 +74,15 @@
 			children = (
 				67D4374229ABC06F009F0E8B /* AppDelegate.swift */,
 				67D4374429ABC06F009F0E8B /* SceneDelegate.swift */,
-				67D4374629ABC06F009F0E8B /* ViewController.swift */,
+				67D4374629ABC06F009F0E8B /* PostDetailsViewController.swift */,
 				67D4374829ABC06F009F0E8B /* Main.storyboard */,
 				67D4374B29ABC073009F0E8B /* Assets.xcassets */,
 				67D4374D29ABC073009F0E8B /* LaunchScreen.storyboard */,
 				67D4375029ABC073009F0E8B /* Info.plist */,
 				678827AF29B51BEB0060ED08 /* PostListViewController.swift */,
 				678827B129B51CDE0060ED08 /* PostTableViewCell.swift */,
+				678827B529B5311A0060ED08 /* RedditPostView.swift */,
+				678827B729B534590060ED08 /* RedditPostView.xib */,
 			);
 			path = MyApp;
 			sourceTree = "<group>";
@@ -96,6 +106,8 @@
 			packageProductDependencies = (
 				67D4375729AE6F16009F0E8B /* SDWebImage */,
 				67D4375929AE6F16009F0E8B /* SDWebImageMapKit */,
+				67EF252529B7947A00906C53 /* SDWebImage */,
+				67EF252729B7947A00906C53 /* SDWebImageMapKit */,
 			);
 			productName = MyApp;
 			productReference = 67D4373F29ABC06F009F0E8B /* MyApp.app */;
@@ -127,6 +139,7 @@
 			mainGroup = 67D4373629ABC06F009F0E8B;
 			packageReferences = (
 				67D4375629AE6F15009F0E8B /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				67EF252429B7947A00906C53 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = 67D4374029ABC06F009F0E8B /* Products */;
 			projectDirPath = "";
@@ -143,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				67D4374F29ABC073009F0E8B /* LaunchScreen.storyboard in Resources */,
+				678827B829B534590060ED08 /* RedditPostView.xib in Resources */,
 				67D4374C29ABC073009F0E8B /* Assets.xcassets in Resources */,
 				67D4374A29ABC06F009F0E8B /* Main.storyboard in Resources */,
 			);
@@ -156,10 +170,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				678827B029B51BEB0060ED08 /* PostListViewController.swift in Sources */,
-				67D4374729ABC06F009F0E8B /* ViewController.swift in Sources */,
+				67D4374729ABC06F009F0E8B /* PostDetailsViewController.swift in Sources */,
 				678827B229B51CDE0060ED08 /* PostTableViewCell.swift in Sources */,
 				67D4374329ABC06F009F0E8B /* AppDelegate.swift in Sources */,
 				67D4374529ABC06F009F0E8B /* SceneDelegate.swift in Sources */,
+				678827B629B5311A0060ED08 /* RedditPostView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +402,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		67EF252429B7947A00906C53 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -396,6 +419,16 @@
 			productName = SDWebImage;
 		};
 		67D4375929AE6F16009F0E8B /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 67D4375629AE6F15009F0E8B /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
+		};
+		67EF252529B7947A00906C53 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 67D4375629AE6F15009F0E8B /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		67EF252729B7947A00906C53 /* SDWebImageMapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 67D4375629AE6F15009F0E8B /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImageMapKit;

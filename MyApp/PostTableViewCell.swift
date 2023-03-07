@@ -10,9 +10,20 @@ import UIKit
 
 
 final class PostTableViewCell: UITableViewCell {
-    
     // MARK: - IBOutlet
-    @IBOutlet private weak var RedditPost: UIView!
+    
+
+    @IBOutlet weak var redditPost: RedditPostView!
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
+    
+
+    
+    func config(with data:RedditPostData){
+        self.redditPost.fillView(with: data)
+    }
     
     
 }
