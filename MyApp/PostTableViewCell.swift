@@ -14,6 +14,8 @@ final class PostTableViewCell: UITableViewCell {
     
 
     @IBOutlet weak var redditPost: RedditPostView!
+    
+    var viewController : UIViewController!
 
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -21,7 +23,9 @@ final class PostTableViewCell: UITableViewCell {
     
 
     
-    func config(with data:RedditPostData){
+    func config(with data:RedditPostDataToSave){
+        self.redditPost.parentViewController = viewController
+        self.redditPost.giveInfoForLink(data: data)
         self.redditPost.fillView(with: data)
     }
     

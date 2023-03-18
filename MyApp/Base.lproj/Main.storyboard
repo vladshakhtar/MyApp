@@ -67,32 +67,43 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="q5T-zh-zcd">
-                            <rect key="frame" x="0.0" y="0.0" width="428" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="428" height="70"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="/r/iOS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ExY-TH-ZtI">
-                                    <rect key="frame" x="191.33333333333334" y="11.666666666666664" width="45.666666666666657" height="21"/>
+                                    <rect key="frame" x="191.33333333333334" y="10" width="45.666666666666657" height="21"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aGv-0L-Uqs">
-                                    <rect key="frame" x="362.66666666666669" y="6.6666666666666679" width="45.333333333333314" height="31.000000000000004"/>
+                                    <rect key="frame" x="362.66666666666669" y="19.666666666666671" width="45.333333333333314" height="31"/>
                                     <state key="normal" title="Button"/>
                                     <buttonConfiguration key="configuration" style="plain" image="bookmark.circle" catalog="system"/>
+                                    <connections>
+                                        <action selector="showSavedPosts:" destination="p3l-iV-a52" eventType="touchUpInside" id="Xb3-Iz-46K"/>
+                                    </connections>
                                 </button>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="y09-Fr-XDK">
+                                    <rect key="frame" x="70" y="32" width="288" height="34"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemGray2Color"/>
                             <constraints>
+                                <constraint firstAttribute="trailing" secondItem="y09-Fr-XDK" secondAttribute="trailing" constant="70" id="0DD-nv-iFe"/>
                                 <constraint firstItem="aGv-0L-Uqs" firstAttribute="centerY" secondItem="q5T-zh-zcd" secondAttribute="centerY" id="9g3-Al-os4"/>
                                 <constraint firstItem="ExY-TH-ZtI" firstAttribute="centerX" secondItem="q5T-zh-zcd" secondAttribute="centerX" id="ALI-CK-PUh"/>
+                                <constraint firstItem="ExY-TH-ZtI" firstAttribute="top" secondItem="q5T-zh-zcd" secondAttribute="top" constant="10" id="SNx-Ap-2yX"/>
                                 <constraint firstAttribute="trailing" secondItem="aGv-0L-Uqs" secondAttribute="trailing" constant="20" id="XfY-24-xOb"/>
-                                <constraint firstItem="ExY-TH-ZtI" firstAttribute="centerY" secondItem="q5T-zh-zcd" secondAttribute="centerY" id="c7e-JK-baJ"/>
+                                <constraint firstItem="y09-Fr-XDK" firstAttribute="top" secondItem="ExY-TH-ZtI" secondAttribute="bottom" constant="1" id="eA8-r5-NFj"/>
+                                <constraint firstItem="y09-Fr-XDK" firstAttribute="leading" secondItem="q5T-zh-zcd" secondAttribute="leading" constant="70" id="hFb-be-v6G"/>
                             </constraints>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostTableViewCell" id="G5U-UX-zon" customClass="PostTableViewCell" customModule="MyApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88.666666030883789" width="428" height="43.666667938232422"/>
+                                <rect key="frame" x="0.0" y="114.66666603088379" width="428" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="G5U-UX-zon" id="Eue-gh-WIH">
                                     <rect key="frame" x="0.0" y="0.0" width="428" height="43.666667938232422"/>
@@ -126,6 +137,7 @@
                         <outlet property="circledBookmarkButton" destination="aGv-0L-Uqs" id="cNR-rH-PgH"/>
                         <outlet property="subRedditTitleLabel" destination="ExY-TH-ZtI" id="L9p-Bt-PSj"/>
                         <outlet property="subRedditView" destination="q5T-zh-zcd" id="Mof-l4-ciw"/>
+                        <outlet property="titleSearch" destination="y09-Fr-XDK" id="SCU-7I-FIP"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="GoToPostDetails" id="yxc-7r-Ucw"/>
                     </connections>
                 </tableViewController>

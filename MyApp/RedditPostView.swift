@@ -34,6 +34,13 @@ import UIKit
     @IBOutlet  private weak var bookmarkButton: UIButton!
     
     @IBOutlet  private weak var redditImage: UIImageView!
+     
+    private var dataForLink: infoForLink?
+     
+    private var imageURL: URL!
+     
+    var parentViewController: UIViewController!
+     
     
     
      override init(frame: CGRect) {
@@ -51,27 +58,99 @@ import UIKit
          postView.fixInView(self)
      }
      
-     func fillView(with data: RedditPostData){
+     func fillView(with data: RedditPostDataToSave){
          DispatchQueue.main.async {
              self.titleLabel.text = data.title
-             self.commentsCountLabel.text = String(data.numComments)
-             self.ratingLabel.text = String(data.ups+data.downs)
+             self.commentsCountLabel.text = data.numComments
+             self.ratingLabel.text = data.rating
              self.usernameLabel.text = data.author
-         let timeElapsed = Int(Date().timeIntervalSince1970 - data.createdUtc)
-         let timeString: String
-         if timeElapsed < 3600 {
-             timeString = "\(timeElapsed / 60)m"
-         } else if timeElapsed < 86400 {
-             timeString = "\(timeElapsed / 3600)h"
-         } else {
-             timeString = "\(timeElapsed / 86400)d"
-         }
-             self.timePassedLabel.text = timeString
+             self.domainLabel.text = data.domain
+             self.timePassedLabel.text = data.timePassed
              self.bookmarkButton.setImage(data.saved ? UIImage(systemName: "bookmark.fill") : UIImage(systemName: "bookmark"), for: .normal)
              self.redditImage.sd_setImage(with: data.url)
+             
+             
          }
      }
+     
+     typealias infoForLink = (subReddit: String, id: String)
+     
+     
+     func giveInfoForLink(data: RedditPostDataToSave){
+         DispatchQueue.main.async {
+             self.dataForLink = (data.subreddit, data.id)
+             self.imageURL = data.url
+         }
+     }
+     
+     
+     
+     //MARK: IBAction
+     @IBAction func sharePost(_ sender: Any) {
 
+         guard let dataForLink = dataForLink else {
+             return
+         }
+
+         
+         let postURLString = "https://www.reddit.com/r/\(dataForLink.subReddit)/comments/\(dataForLink.id)"
+         
+         guard let postURL = URL(string: postURLString) else {
+             return
+         }
+         
+         let activityItems = [postURL]
+         DispatchQueue.main.async {
+         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+             self.parentViewController.present(activityViewController, animated: true, completion: nil)
+         }
+     }
+     
+     @IBAction func savePost(_ sender: Any) {
+         
+         let plvc = parentViewController as! PostListViewController
+         
+         if self.bookmarkButton.currentImage == UIImage(systemName: "bookmark"){
+             self.bookmarkButton.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
+             for i in 0..<plvc.dataToPost.count {
+                 if plvc.dataToPost[i].title == self.titleLabel.text{
+                     plvc.dataToPost[i].saved = true
+                     plvc.saveDataToDisk(RedditPostDataToSave(title: self.titleLabel.text!,
+                                                              numComments: self.commentsCountLabel.text!,
+                                                              timePassed: self.timePassedLabel.text!,
+                                                              url: self.imageURL,
+                                                              author: self.usernameLabel.text!,
+                                                              rating: self.ratingLabel.text!,
+                                                              domain: self.domainLabel.text!,
+                                                              saved: true,
+                                                              subreddit: dataForLink!.subReddit,
+                                                              id: dataForLink!.id))
+                     plvc.tableView.reloadData()
+                 }
+             }
+             
+         } else {
+             self.bookmarkButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
+             for i in 0..<plvc.dataToPost.count {
+                 if plvc.dataToPost[i].title == self.titleLabel.text{
+                     plvc.dataToPost[i].saved = false
+                     plvc.deleteDataFromDisk(RedditPostDataToSave(title: self.titleLabel.text!,
+                                                                  numComments: self.commentsCountLabel.text!,
+                                                                  timePassed: self.timePassedLabel.text!,
+                                                                  url: self.imageURL,
+                                                                  author: self.usernameLabel.text!,
+                                                                  rating: self.ratingLabel.text!,
+                                                                  domain: self.domainLabel.text!,
+                                                                  saved: false,
+                                                                  subreddit: dataForLink!.subReddit,
+                                                                  id: dataForLink!.id))
+                     plvc.tableView.reloadData()
+                 }
+             }
+         }
+     }
+     
+     
 
 }
 
@@ -89,3 +168,5 @@ extension UIView
     }
     
 }
+
+

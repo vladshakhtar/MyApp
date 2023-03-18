@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -29,7 +28,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D2M-U6-XE2" userLabel="ShareButton">
-                    <rect key="frame" x="306" y="278" width="88" height="20"/>
+                    <rect key="frame" x="309.5" y="278" width="84.5" height="20"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="mwN-nA-SgQ"/>
                     </constraints>
@@ -39,6 +38,9 @@
                         <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="15"/>
                         <color key="baseForegroundColor" systemColor="systemGray2Color"/>
                     </buttonConfiguration>
+                    <connections>
+                        <action selector="sharePost:" destination="-1" eventType="touchUpInside" id="lLM-k2-fPR"/>
+                    </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2UX-2M-0Xn" userLabel="Username">
                     <rect key="frame" x="7" y="2" width="45" height="11"/>
@@ -74,6 +76,9 @@
                     <buttonConfiguration key="configuration" style="plain" title="" imagePadding="0.0" buttonSize="mini">
                         <imageReference key="image" image="bookmark" catalog="system" symbolScale="default"/>
                     </buttonConfiguration>
+                    <connections>
+                        <action selector="savePost:" destination="-1" eventType="touchUpInside" id="37v-1Q-bke"/>
+                    </connections>
                 </button>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="bubble.left.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="mkB-aC-DOp">
                     <rect key="frame" x="120.5" y="278.5" width="23" height="19.5"/>
@@ -158,14 +163,14 @@
         </view>
     </objects>
     <resources>
-        <image name="applelogo" catalog="system" width="105" height="128"/>
-        <image name="arrow.up" catalog="system" width="118" height="128"/>
-        <image name="bookmark" catalog="system" width="110" height="128"/>
+        <image name="applelogo" catalog="system" width="103" height="128"/>
+        <image name="arrow.up" catalog="system" width="120" height="128"/>
+        <image name="bookmark" catalog="system" width="112" height="128"/>
         <image name="bubble.left.fill" catalog="system" width="128" height="110"/>
-        <image name="circle.fill" catalog="system" width="128" height="123"/>
+        <image name="circle.fill" catalog="system" width="128" height="121"/>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
         <systemColor name="labelColor">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

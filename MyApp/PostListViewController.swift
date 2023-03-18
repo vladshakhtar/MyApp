@@ -10,37 +10,68 @@ import UIKit
 import SDWebImage
 
 
-class PostListViewController: UITableViewController {
+class PostListViewController: UITableViewController, UITextFieldDelegate {
     
     //MARK: IBOutlets
     
-    @IBOutlet weak var subRedditView: UIView!
+    @IBOutlet private weak var subRedditView: UIView!
     
-    @IBOutlet weak var subRedditTitleLabel: UILabel!
+    @IBOutlet private weak var subRedditTitleLabel: UILabel!
         
-    @IBOutlet weak var circledBookmarkButton: UIButton!
+    @IBOutlet private weak var circledBookmarkButton: UIButton!
+    
+    @IBOutlet private weak var titleSearch: UITextField!
+    
     //MARK: Const
-    struct Const {
+    
+    enum Const {
         static let cellReuseIdentifier = "PostTableViewCell"
         static let goToPostDetailsSegueID = "GoToPostDetails"
+        static let savedPostButtonImageSystemName = "bookmark.circle.fill"
+        static let nonSavedPostButtonImageSystemName = "bookmark.circle"
+        static let fileWithSavedPostsName = "saved_reddit_posts.json"
     }
     
+    //MARK: IBAction
     
+    @IBAction func showSavedPosts(_ sender: Any) {
+        if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
+            loadDataFromDisk()
+            self.circledBookmarkButton.setImage(UIImage(systemName: Const.savedPostButtonImageSystemName), for: .normal)
+            self.titleSearch.isHidden = false
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            
+        } else {
+            self.circledBookmarkButton.setImage(UIImage(systemName: Const.nonSavedPostButtonImageSystemName), for: .normal)
+            self.titleSearch.isHidden = true
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        
+    }
     
     //MARK: Properties data
-    var dataToPost: [RedditPostData] = []
+    var dataToPost: [RedditPostDataToSave] = []
+    var savedDataToPost: [RedditPostDataToSave] = []
+    var filteredPosts: [RedditPostDataToSave] = []
     var isLoading = false
     var after: String?
-    var lastSelectedPost: RedditPostData?
-    
+    var lastSelectedPost: RedditPostDataToSave?
     
     //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.titleSearch.delegate = self
 //        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: Const.cellReuseIdentifier)
+        self.circledBookmarkButton.setImage(UIImage(systemName: Const.nonSavedPostButtonImageSystemName), for: .normal)
+        self.titleSearch.isHidden = true
+        loadDataFromDisk()
         loadData()
-
+        filteredPosts = savedDataToPost
     }
     
     //MARK: Navigation
@@ -51,6 +82,7 @@ class PostListViewController: UITableViewController {
             case Const.goToPostDetailsSegueID:
                 let nextVc = segue.destination as! PostDetailsViewController
                 DispatchQueue.main.async {
+                    nextVc.viewController = self
                     nextVc.config(with: self.lastSelectedPost ?? self.dataToPost[0])
 
                 }
@@ -62,7 +94,12 @@ class PostListViewController: UITableViewController {
     
     // MARK: UITableViewDataSource
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
         return dataToPost.count
+        } else {
+            return filteredPosts.count
+        }
+        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -74,8 +111,13 @@ class PostListViewController: UITableViewController {
             withIdentifier: Const.cellReuseIdentifier,
             for: indexPath) as! PostTableViewCell
         
-        cell.config(with: dataToPost[indexPath.row])
+        cell.viewController = self
         
+        if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
+        cell.config(with: dataToPost[indexPath.row])
+        } else {
+            cell.config(with: filteredPosts[indexPath.row])
+        }
         
         return cell
         
@@ -89,43 +131,55 @@ class PostListViewController: UITableViewController {
             let visibleHeight = scrollView.frame.height
             
             if offsetY > contentHeight - visibleHeight * 2 {
-                // load the next page of posts
-                loadData()
+                if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
+                    loadData()
+                }
             }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
         lastSelectedPost = dataToPost[indexPath.row]
-        //print("Did select row number: \(indexPath.row)")
+        } else {
+            lastSelectedPost = filteredPosts[indexPath.row]
+        }
         self.performSegue(
             withIdentifier: Const.goToPostDetailsSegueID, sender: nil
         )
     }
     
-    
-    
+
+    //MARK: UITextFieldDelegate
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentSearchString = textField.text ?? ""
+        let newSearchString = (currentSearchString as NSString).replacingCharacters(in: range, with: string)
+        
+        if newSearchString.isEmpty {
+                filteredPosts = savedDataToPost
+            } else {
+                filteredPosts = savedDataToPost.filter { $0.title.range(of: newSearchString, options: .caseInsensitive) != nil }
+            }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+        return true
+    }
     
     
     //MARK: Fuction to load required info
     func loadData() {
-        // make sure we're not already loading a page
         guard !isLoading else {
             return
         }
         isLoading = true
-        
-        // construct the URL for the next page of posts
-        var urlComponents = URLComponents(string: "https://www.reddit.com/r/ios/top.json")!
-        urlComponents.queryItems = [
-            URLQueryItem(name: "limit", value: "15"),
-            URLQueryItem(name: "after", value: after) // <-- update the after parameter
-        ]
-        guard let url = urlComponents.url else {
+
+        let request = RedditAPIRequest(path: "/r/ios/top.json", limit: 15, after: after)
+
+        guard let url = request.url else {
             return
         }
-        
-        // make the request for the next page of posts
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        let urlSession = URLSession(configuration: .ephemeral)
+        let task = urlSession.dataTask(with: url) { (data, response, error) in
             // handle the response
             defer {
                 self.isLoading = false
@@ -144,11 +198,17 @@ class PostListViewController: UITableViewController {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let redditAPIResponse = try decoder.decode(RedditAPIResponse.self, from: data)
-                    self.after = redditAPIResponse.data.after // update the "after" parameter for the next request
+                    self.after = redditAPIResponse.data.after
                     let newPosts = redditAPIResponse.data.children.map { $0.data }
-                    self.dataToPost.append(contentsOf: newPosts) // <-- add new posts to the existing array
+                    var mappedPosts = newPosts.map {mapDownloadedDataWithDataToSave(downloadedData: $0)}
+                    for i in 0..<mappedPosts.count {
+                        if self.savedDataToPost.contains(mappedPosts[i]){
+                            mappedPosts[i].saved = true
+                        }
+                    }
+                    self.dataToPost.append(contentsOf: mappedPosts)
                     DispatchQueue.main.async {
-                        self.tableView.reloadData() // update the table view with the new data
+                        self.tableView.reloadData()
                     }
                 } catch {
                     print("Error decoding JSON: \(error.localizedDescription)")
@@ -157,6 +217,137 @@ class PostListViewController: UITableViewController {
         }
         task.resume()
     }
+    
+    
+    //MARK: Save, Load And Delete Data Locally
+    
+    func saveDataToDisk(_ data: RedditPostDataToSave) {
+        do {
+            let encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = .useDefaultKeys
+            let jsonData = try encoder.encode(data)
+            let fileManager = FileManager.default
+            let documentsDirectory = try fileManager.url(
+                for: .documentDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: false
+            )
+            
+            let fileURL = documentsDirectory.appendingPathComponent(Const.fileWithSavedPostsName)
+            
+            if let fileHandle = try? FileHandle(forWritingTo: fileURL) {
+                            fileHandle.seekToEndOfFile()
+                            fileHandle.write(jsonData)
+                            fileHandle.write("\n".data(using: .utf8)!)
+                            fileHandle.closeFile()
+                    } else {
+                        try jsonData.write(to: fileURL)
+                    }
+                    
+                    print("Success saving!")
+                } catch {
+                    print("Error saving data to file: \(error.localizedDescription)")
+                }
+    }
+    
+    func loadDataFromDisk() {
+        do {
+            let fileManager = FileManager.default
+            let documentsDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let fileURL = documentsDirectory.appendingPathComponent(Const.fileWithSavedPostsName)
+            
+            if !fileManager.fileExists(atPath: fileURL.path) {
+                print("File does not exist at path: \(fileURL)")
+                return
+            }
+            
+            let jsonData = try String(contentsOf: fileURL)
+            let lines = jsonData.split(separator: "\n")
+            if jsonData.isEmpty {
+                print("File at path \(fileURL) is empty.")
+                return
+            }
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .useDefaultKeys
+            var data: [RedditPostDataToSave] = []
+            for line in lines {
+                        if let lineData = line.data(using: .utf8),
+                           let post = try? decoder.decode(RedditPostDataToSave.self, from: lineData) {
+                            data.append(post)
+                        }
+                    }
+            print("Data loaded succesfully!")
+            for post in data {
+                if !savedDataToPost.contains(post){
+                    savedDataToPost.append(post)
+                }
+            }
+            
+        } catch {
+            print("Error loading data from file: \(error.localizedDescription)")
+        }
+    }
+
+    
+    func deleteDataFromDisk(_ postToDelete: RedditPostDataToSave) {
+        do {
+            let fileManager = FileManager.default
+            let documentsDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let fileURL = documentsDirectory.appendingPathComponent(Const.fileWithSavedPostsName)
+            
+            if !fileManager.fileExists(atPath: fileURL.path) {
+                print("File does not exist at path: \(fileURL)")
+                return
+            }
+            
+            let jsonData = try String(contentsOf: fileURL)
+            let lines = jsonData.split(separator: "\n")
+            if jsonData.isEmpty {
+                print("File at path \(fileURL) is empty.")
+                return
+            }
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .useDefaultKeys
+            var data: [RedditPostDataToSave] = []
+            for line in lines {
+                        if let lineData = line.data(using: .utf8),
+                           let post = try? decoder.decode(RedditPostDataToSave.self, from: lineData) {
+                            if post != postToDelete{
+                            data.append(post)
+                            }
+                        }
+                    }
+            
+            if let fileHandle = try? FileHandle(forWritingTo: fileURL) {
+                        fileHandle.truncateFile(atOffset: 0)
+                        for post in data {
+                            let postData = try JSONEncoder().encode(post)
+                            fileHandle.write(postData)
+                            fileHandle.write("\n".data(using: .utf8)!)
+                        }
+                        fileHandle.closeFile()
+                    } else {
+                        let jsonData = try JSONEncoder().encode(data)
+                        try jsonData.write(to: fileURL)
+                    }
+            
+            print("Success deleting of data!")
+            
+        } catch {
+            print("Error deleting data from file: \(error.localizedDescription)")
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     
 }
 
@@ -207,17 +398,81 @@ struct RedditPost: Codable {
 }
 
 struct RedditPostData: Codable {
+    //data to show
     let title: String
-    //let score: Int
     let numComments: Int
     let createdUtc: TimeInterval
-    //let thumbnail: String
     let url: URL
     let author: String
     let ups: Int
     let downs: Int
     let domain: String
-    let saved: Bool = Bool.random()
+    var saved: Bool = false
+    
+   //data for permalink
+    let subreddit: String
+    let id: String
+    
 }
+
+struct RedditPostDataToSave: Codable, Equatable {
+    var title: String
+    var numComments: String
+    var timePassed: String
+    var url: URL
+    var author: String
+    var rating: String
+    var domain: String
+    var saved: Bool
+    
+    //data for permalink
+    var subreddit: String
+    var id: String
+    
+    enum CodingKeys: String, CodingKey {
+        case title
+        case numComments = "num_comments"
+        case timePassed = "time_passed"
+        case url
+        case author
+        case rating
+        case domain
+        case saved
+        case subreddit
+        case id
+    }
+    
+    static func == (lhs: RedditPostDataToSave, rhs: RedditPostDataToSave) -> Bool {
+            return lhs.title == rhs.title
+        }
+}
+
+
+func mapDownloadedDataWithDataToSave(downloadedData: RedditPostData) -> RedditPostDataToSave {
+    let timeElapsed = Int(Date().timeIntervalSince1970 - downloadedData.createdUtc)
+            let timeString: String
+            if timeElapsed < 3600 {
+                timeString = "\(timeElapsed / 60)m"
+            } else if timeElapsed < 86400 {
+                timeString = "\(timeElapsed / 3600)h"
+            } else {
+                timeString = "\(timeElapsed / 86400)d"
+            }
+    let postDataToSave = RedditPostDataToSave(title: downloadedData.title,
+                                              numComments: String(downloadedData.numComments),
+                                              timePassed: timeString,
+                                              url: downloadedData.url,
+                                              author: downloadedData.author,
+                                              rating: String(downloadedData.ups+downloadedData.downs),
+                                              domain: downloadedData.domain,
+                                              saved: downloadedData.saved,
+                                              subreddit: downloadedData.subreddit,
+                                              id: downloadedData.id)
+    return postDataToSave
+}
+
+
+    
+    
 
 
