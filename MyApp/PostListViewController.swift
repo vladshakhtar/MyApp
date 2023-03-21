@@ -60,6 +60,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
     var isLoading = false
     var after: String?
     var lastSelectedPost: RedditPostDataToSave?
+    var showFiltered = false
     
     //MARK: Lifecycle
     override func viewDidLoad() {
@@ -71,7 +72,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
         self.titleSearch.isHidden = true
         loadDataFromDisk()
         loadData()
-        filteredPosts = savedDataToPost
+        
     }
     
     //MARK: Navigation
@@ -113,14 +114,43 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
         
         cell.viewController = self
         
+        let doubleTapGesture = UITapGestureRecognizer(target: cell.redditPost,
+                                                      action:
+                                                        #selector(RedditPostView.didDoubleTap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        cell.redditPost.addGestureRecognizer(doubleTapGesture)
+        
+        let singleTapGesture = UITapGestureRecognizer(target: self,
+                                                      action:
+                                                        #selector(didSingleTap(_:)))
+        singleTapGesture.numberOfTapsRequired = 1
+        singleTapGesture.require(toFail: doubleTapGesture)
+        cell.addGestureRecognizer(singleTapGesture)
+        
         if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
         cell.config(with: dataToPost[indexPath.row])
         } else {
+            filteredPosts = savedDataToPost
             cell.config(with: filteredPosts[indexPath.row])
         }
         
         return cell
         
+    }
+    
+    @objc func didSingleTap(_ sender: UITapGestureRecognizer) {
+//        print("didSingleTap")
+        if let cell = sender.view as? PostTableViewCell,
+           let indexPath = tableView.indexPath(for: cell) {
+            if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
+                lastSelectedPost = dataToPost[indexPath.row]
+            } else {
+                lastSelectedPost = filteredPosts[indexPath.row]
+            }
+            self.performSegue(
+                withIdentifier: Const.goToPostDetailsSegueID, sender: nil
+            )
+        }
     }
     
     
@@ -137,16 +167,19 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
             }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
-        lastSelectedPost = dataToPost[indexPath.row]
-        } else {
-            lastSelectedPost = filteredPosts[indexPath.row]
-        }
-        self.performSegue(
-            withIdentifier: Const.goToPostDetailsSegueID, sender: nil
-        )
-    }
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
+//        lastSelectedPost = dataToPost[indexPath.row]
+//        } else {
+//            lastSelectedPost = filteredPosts[indexPath.row]
+//        }
+//        self.performSegue(
+//            withIdentifier: Const.goToPostDetailsSegueID, sender: nil
+//        )
+//    }
+    
+
+
     
 
     //MARK: UITextFieldDelegate
@@ -154,7 +187,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
         let currentSearchString = textField.text ?? ""
         let newSearchString = (currentSearchString as NSString).replacingCharacters(in: range, with: string)
         
-        if newSearchString.isEmpty {
+        if newSearchString.isEmpty  {
                 filteredPosts = savedDataToPost
             } else {
                 filteredPosts = savedDataToPost.filter { $0.title.range(of: newSearchString, options: .caseInsensitive) != nil }
@@ -249,6 +282,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
                 } catch {
                     print("Error saving data to file: \(error.localizedDescription)")
                 }
+        
     }
     
     func loadDataFromDisk() {
@@ -283,6 +317,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
                     savedDataToPost.append(post)
                 }
             }
+            filteredPosts = savedDataToPost
             
         } catch {
             print("Error loading data from file: \(error.localizedDescription)")
@@ -332,17 +367,23 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
                         try jsonData.write(to: fileURL)
                     }
             
+            for i in 0..<savedDataToPost.count{
+                if savedDataToPost[i] == postToDelete{
+                    for j in 0..<filteredPosts.count{
+                        if filteredPosts[j] == savedDataToPost[i]{
+                            filteredPosts.remove(at: j)
+                        }
+                    }
+                    savedDataToPost.remove(at: i)
+                }
+            }
+            
             print("Success deleting of data!")
             
         } catch {
             print("Error deleting data from file: \(error.localizedDescription)")
         }
     }
-
-
-
-
-
 
 
 

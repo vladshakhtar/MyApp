@@ -18,6 +18,11 @@ class PostDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let doubleTapGesture = UITapGestureRecognizer(target: self.particularRedditPost,
+                                                      action:
+                                                        #selector(RedditPostView.didDoubleTap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        self.particularRedditPost.addGestureRecognizer(doubleTapGesture)
         
     }
     

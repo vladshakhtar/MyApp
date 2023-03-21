@@ -21,6 +21,7 @@
 		67D4375A29AE6F16009F0E8B /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 67D4375929AE6F16009F0E8B /* SDWebImageMapKit */; };
 		67EF252629B7947A00906C53 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 67EF252529B7947A00906C53 /* SDWebImage */; };
 		67EF252829B7947A00906C53 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 67EF252729B7947A00906C53 /* SDWebImageMapKit */; };
+		67EF253029C8A47200906C53 /* BookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67EF252F29C8A47100906C53 /* BookmarkView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		67D4374B29ABC073009F0E8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		67D4374E29ABC073009F0E8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		67D4375029ABC073009F0E8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		67EF252F29C8A47100906C53 /* BookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				678827B129B51CDE0060ED08 /* PostTableViewCell.swift */,
 				678827B529B5311A0060ED08 /* RedditPostView.swift */,
 				678827B729B534590060ED08 /* RedditPostView.xib */,
+				67EF252F29C8A47100906C53 /* BookmarkView.swift */,
 			);
 			path = MyApp;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				678827B029B51BEB0060ED08 /* PostListViewController.swift in Sources */,
+				67EF253029C8A47200906C53 /* BookmarkView.swift in Sources */,
 				67D4374729ABC06F009F0E8B /* PostDetailsViewController.swift in Sources */,
 				678827B229B51CDE0060ED08 /* PostTableViewCell.swift in Sources */,
 				67D4374329ABC06F009F0E8B /* AppDelegate.swift in Sources */,

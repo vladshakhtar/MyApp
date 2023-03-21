@@ -125,7 +125,9 @@ import UIKit
                                                               saved: true,
                                                               subreddit: dataForLink!.subReddit,
                                                               id: dataForLink!.id))
-                     plvc.tableView.reloadData()
+                     DispatchQueue.main.async {
+                         plvc.tableView.reloadData()
+                     }
                  }
              }
              
@@ -134,23 +136,85 @@ import UIKit
              for i in 0..<plvc.dataToPost.count {
                  if plvc.dataToPost[i].title == self.titleLabel.text{
                      plvc.dataToPost[i].saved = false
-                     plvc.deleteDataFromDisk(RedditPostDataToSave(title: self.titleLabel.text!,
-                                                                  numComments: self.commentsCountLabel.text!,
-                                                                  timePassed: self.timePassedLabel.text!,
-                                                                  url: self.imageURL,
-                                                                  author: self.usernameLabel.text!,
-                                                                  rating: self.ratingLabel.text!,
-                                                                  domain: self.domainLabel.text!,
-                                                                  saved: false,
-                                                                  subreddit: dataForLink!.subReddit,
-                                                                  id: dataForLink!.id))
-                     plvc.tableView.reloadData()
+                     for j in 0..<plvc.savedDataToPost.count {
+                         if plvc.dataToPost[i] == plvc.savedDataToPost[j]{
+                             plvc.savedDataToPost[j].saved = false
+                         }
+                     }
                  }
+             }
+             plvc.deleteDataFromDisk(RedditPostDataToSave(title: self.titleLabel.text!,
+                                                          numComments: self.commentsCountLabel.text!,
+                                                          timePassed: self.timePassedLabel.text!,
+                                                          url: self.imageURL,
+                                                          author: self.usernameLabel.text!,
+                                                          rating: self.ratingLabel.text!,
+                                                          domain: self.domainLabel.text!,
+                                                          saved: false,
+                                                          subreddit: dataForLink!.subReddit,
+                                                          id: dataForLink!.id))
+             DispatchQueue.main.async {
+                 plvc.tableView.reloadData()
              }
          }
      }
      
      
+     
+     @objc func didDoubleTap(_ gesture : UITapGestureRecognizer){
+         guard let view = self.redditImage else {
+                      return
+                  }
+              let bookmarkView = BookmarkView(frame: CGRect(x: (view.frame.size.width-40)/2,
+                                                            y: (view.frame.size.height-40)/2,
+                                                            width: 40,
+                                                            height: 40))
+              view.addSubview(bookmarkView)
+              
+              bookmarkView.alpha = 0
+              
+                  UIView.animate(withDuration: 0.5,animations: {
+                      bookmarkView.alpha = 1
+                  }, completion: { done in
+                      if done {
+                          UIView.animate(withDuration: 0.5, animations: {
+                              bookmarkView.alpha = 0
+                          }, completion: {done in
+                              if done {
+                                  bookmarkView.removeFromSuperview()
+                              }
+                          })
+                      }
+                  })
+              
+         DispatchQueue.main.asyncAfter(deadline: .now()+1 , execute: {
+              if self.bookmarkButton.currentImage == UIImage(systemName: "bookmark") {
+                  self.bookmarkButton.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
+                  let plvc = self.parentViewController as! PostListViewController
+
+                  for i in 0..<plvc.dataToPost.count {
+                      if plvc.dataToPost[i].title == self.titleLabel.text{
+                          plvc.dataToPost[i].saved = true
+                          plvc.saveDataToDisk(RedditPostDataToSave(title: self.titleLabel.text!,
+                                                                   numComments: self.commentsCountLabel.text!,
+                                                                   timePassed: self.timePassedLabel.text!,
+                                                                   url: self.imageURL,
+                                                                   author: self.usernameLabel.text!,
+                                                                   rating: self.ratingLabel.text!,
+                                                                   domain: self.domainLabel.text!,
+                                                                   saved: true,
+                                                                   subreddit: self.dataForLink!.subReddit,
+                                                                   id: self.dataForLink!.id))
+                          DispatchQueue.main.async {
+                              plvc.tableView.reloadData()
+                          }
+                      }
+                  }
+
+              }
+     })
+              
+          }
 
 }
 

@@ -21,6 +21,7 @@ final class PostTableViewCell: UITableViewCell {
         super.prepareForReuse()
     }
     
+    
 
     
     func config(with data:RedditPostDataToSave){
