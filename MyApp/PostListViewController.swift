@@ -12,7 +12,7 @@ import SDWebImage
 
 class PostListViewController: UITableViewController, UITextFieldDelegate {
     
-    //MARK: IBOutlets
+    //MARK: - IBOutlets
     
     @IBOutlet private weak var subRedditView: UIView!
     
@@ -22,7 +22,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet private weak var titleSearch: UITextField!
     
-    //MARK: Const
+    //MARK: - Const
     
     enum Const {
         static let cellReuseIdentifier = "PostTableViewCell"
@@ -32,7 +32,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
         static let fileWithSavedPostsName = "saved_reddit_posts.json"
     }
     
-    //MARK: IBAction
+    //MARK: - IBAction
     
     @IBAction func showSavedPosts(_ sender: Any) {
         if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
@@ -60,9 +60,8 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
     var isLoading = false
     var after: String?
     var lastSelectedPost: RedditPostDataToSave?
-    var showFiltered = false
     
-    //MARK: Lifecycle
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,10 +71,10 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
         self.titleSearch.isHidden = true
         loadDataFromDisk()
         loadData()
-        
+        filteredPosts = savedDataToPost
     }
     
-    //MARK: Navigation
+    //MARK: - Navigation
     override func prepare(
         for segue: UIStoryboardSegue,
         sender: Any?) {
@@ -93,7 +92,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
 
     
     
-    // MARK: UITableViewDataSource
+    // MARK: - UITableViewDataSource
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
         return dataToPost.count
@@ -130,7 +129,6 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
         if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
         cell.config(with: dataToPost[indexPath.row])
         } else {
-            filteredPosts = savedDataToPost
             cell.config(with: filteredPosts[indexPath.row])
         }
         
@@ -139,7 +137,6 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @objc func didSingleTap(_ sender: UITapGestureRecognizer) {
-//        print("didSingleTap")
         if let cell = sender.view as? PostTableViewCell,
            let indexPath = tableView.indexPath(for: cell) {
             if self.circledBookmarkButton.currentImage == UIImage(systemName: Const.nonSavedPostButtonImageSystemName){
@@ -190,7 +187,8 @@ class PostListViewController: UITableViewController, UITextFieldDelegate {
         if newSearchString.isEmpty  {
                 filteredPosts = savedDataToPost
             } else {
-                filteredPosts = savedDataToPost.filter { $0.title.range(of: newSearchString, options: .caseInsensitive) != nil }
+                filteredPosts = savedDataToPost.filter { $0.title.range(of: newSearchString, options: .caseInsensitive) != nil
+                }
             }
         DispatchQueue.main.async {
             self.tableView.reloadData()

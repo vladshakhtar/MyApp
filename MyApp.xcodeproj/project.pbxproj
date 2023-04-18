@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		670EA3FF29EAA6C100737A85 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670EA3FA29EAA6C100737A85 /* CommentsViewModel.swift */; };
+		670EA40029EAA6C100737A85 /* CommentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670EA3FB29EAA6C100737A85 /* CommentDetailView.swift */; };
+		670EA40129EAA6C100737A85 /* CommentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670EA3FC29EAA6C100737A85 /* CommentsListView.swift */; };
+		670EA40229EAA6C100737A85 /* CommentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670EA3FD29EAA6C100737A85 /* CommentCellView.swift */; };
+		670EA40429EABD7E00737A85 /* CommentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670EA40329EABD7E00737A85 /* CommentDetailsViewController.swift */; };
 		678827B029B51BEB0060ED08 /* PostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678827AF29B51BEB0060ED08 /* PostListViewController.swift */; };
 		678827B229B51CDE0060ED08 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678827B129B51CDE0060ED08 /* PostTableViewCell.swift */; };
 		678827B629B5311A0060ED08 /* RedditPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678827B529B5311A0060ED08 /* RedditPostView.swift */; };
@@ -25,6 +30,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		670EA3FA29EAA6C100737A85 /* CommentsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
+		670EA3FB29EAA6C100737A85 /* CommentDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDetailView.swift; sourceTree = "<group>"; };
+		670EA3FC29EAA6C100737A85 /* CommentsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsListView.swift; sourceTree = "<group>"; };
+		670EA3FD29EAA6C100737A85 /* CommentCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellView.swift; sourceTree = "<group>"; };
+		670EA40329EABD7E00737A85 /* CommentDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailsViewController.swift; sourceTree = "<group>"; };
 		678827AF29B51BEB0060ED08 /* PostListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewController.swift; sourceTree = "<group>"; };
 		678827B129B51CDE0060ED08 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		678827B529B5311A0060ED08 /* RedditPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditPostView.swift; sourceTree = "<group>"; };
@@ -55,6 +65,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		670EA3F629EA9C6F00737A85 /* CommentsListSwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				670EA3FD29EAA6C100737A85 /* CommentCellView.swift */,
+				670EA3FB29EAA6C100737A85 /* CommentDetailView.swift */,
+				670EA3FC29EAA6C100737A85 /* CommentsListView.swift */,
+				670EA3FA29EAA6C100737A85 /* CommentsViewModel.swift */,
+			);
+			path = CommentsListSwiftUI;
+			sourceTree = "<group>";
+		};
 		67D4373629ABC06F009F0E8B = {
 			isa = PBXGroup;
 			children = (
@@ -74,6 +95,7 @@
 		67D4374129ABC06F009F0E8B /* MyApp */ = {
 			isa = PBXGroup;
 			children = (
+				670EA3F629EA9C6F00737A85 /* CommentsListSwiftUI */,
 				67D4374229ABC06F009F0E8B /* AppDelegate.swift */,
 				67D4374429ABC06F009F0E8B /* SceneDelegate.swift */,
 				67D4374629ABC06F009F0E8B /* PostDetailsViewController.swift */,
@@ -86,6 +108,7 @@
 				678827B529B5311A0060ED08 /* RedditPostView.swift */,
 				678827B729B534590060ED08 /* RedditPostView.xib */,
 				67EF252F29C8A47100906C53 /* BookmarkView.swift */,
+				670EA40329EABD7E00737A85 /* CommentDetailsViewController.swift */,
 			);
 			path = MyApp;
 			sourceTree = "<group>";
@@ -172,13 +195,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				670EA3FF29EAA6C100737A85 /* CommentsViewModel.swift in Sources */,
 				678827B029B51BEB0060ED08 /* PostListViewController.swift in Sources */,
+				670EA40229EAA6C100737A85 /* CommentCellView.swift in Sources */,
 				67EF253029C8A47200906C53 /* BookmarkView.swift in Sources */,
+				670EA40029EAA6C100737A85 /* CommentDetailView.swift in Sources */,
 				67D4374729ABC06F009F0E8B /* PostDetailsViewController.swift in Sources */,
 				678827B229B51CDE0060ED08 /* PostTableViewCell.swift in Sources */,
 				67D4374329ABC06F009F0E8B /* AppDelegate.swift in Sources */,
 				67D4374529ABC06F009F0E8B /* SceneDelegate.swift in Sources */,
+				670EA40429EABD7E00737A85 /* CommentDetailsViewController.swift in Sources */,
 				678827B629B5311A0060ED08 /* RedditPostView.swift in Sources */,
+				670EA40129EAA6C100737A85 /* CommentsListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +361,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -361,6 +390,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
